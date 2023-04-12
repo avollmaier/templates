@@ -30,7 +30,7 @@ jobs:
         uses: aquasecurity/trivy-action@master
         with:
           scan-type: 'fs'
-          scan-ref: 'config-service'
+          scan-ref: '${{ github.event.repository.name }}'
           format: 'sarif'
           output: 'trivy-results-source-code.sarif'
       - name: Upload vulnerability report
