@@ -3,7 +3,7 @@ on: push
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{values.owner}}/${{values.company_name}}/${{values.artifact_id}}
+  IMAGE_NAME: ${{ github.repository }}
   VERSION: ${{ github.sha }}
 
 jobs:

@@ -7,10 +7,10 @@ on:
 concurrency: acceptance
 
 env:
-  OWNER: ${{values.owner}}
+  OWNER: ${{github.repository_owner}}
   REGISTRY: ghcr.io
-  APP_REPO: ${{values.artifact_id}}
-  DEPLOY_REPO: ${{values.deploy_repo}}
+  APP_REPO: ${{ github.event.repository.name }}
+  DEPLOY_REPO: deployment
   VERSION: ${{ github.sha }}
 
 jobs:
