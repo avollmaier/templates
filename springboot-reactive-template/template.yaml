@@ -28,6 +28,11 @@ spec:
           type: string
           description: Unique name of the company
           ui:field: EntityNamePicker
+        deploy_repo:
+          title: Deploy Repo Name
+          type: string
+          description: Unique name of the deploy repo
+          ui:field: EntityNamePicker
         java_package_name:
           title: Java Package Name
           type: string
@@ -72,11 +77,12 @@ spec:
           component_id: ${{ parameters.component_id }}
           description: ${{ parameters.description }}
           artifact_id: ${{ parameters.component_id }}
+          deploy_repo: ${{ parameters.deploy_repo }}
           company_name: ${{ parameters.company_name }}
           java_package_name: ${{ parameters.java_package_name }}
           owner: ${{ parameters.owner }}
           destination: ${{ parameters.repoUrl | parseRepoUrl }}
-          http_port: ${{ parameters.port }}
+          port: ${{ parameters.port }}
 
     - id: publish
       name: Publish

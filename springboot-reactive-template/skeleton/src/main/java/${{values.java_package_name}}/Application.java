@@ -1,4 +1,4 @@
-package at.avollmaier.${{values.java_package_name}};
+package at.${{values.java_package_name}};
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -28,3 +28,18 @@ spec:
                 command: [ "sh", "-c", "sleep 5" ]
           ports:
             - containerPort: ${{values.port}}
+          env:
+            - name: BPL_JVM_THREAD_COUNT
+              value: "50"
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: ${{values.port}}
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: ${{values.port}}
+            initialDelaySeconds: 5
+            periodSeconds: 15

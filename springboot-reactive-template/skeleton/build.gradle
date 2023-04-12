@@ -56,12 +56,6 @@ tasks.named('bootBuildImage') {
     environment = ['BP_LIVE_RELOAD_ENABLED': 'true']
     imageName = "${project.name}"
 
-    buildCache {
-        volume {
-            name = "cache-${rootProject.name}.build"
-        }
-    }
-
     docker {
         publishRegistry {
             username = project.findProperty("registryUsername")
