@@ -26,18 +26,19 @@ jobs:
         run: |
           chmod +x gradlew
           ./gradlew build
-      - name: Code vulnerability scanning
-        uses: anchore/scan-action@v3
-        id: scan
+      - name: Source code vulnerability scanning
+        uses: aquasecurity/trivy-action@master
         with:
-          path: "${{ github.workspace }}"
-          fail-build: false
-          severity-cutoff: high
+          scan-type: 'fs'
+          scan-ref: 'config-service'
+          format: 'sarif'
+          output: 'trivy-results-source-code.sarif'
       - name: Upload vulnerability report
         uses: github/codeql-action/upload-sarif@v2
         if: success() || failure()
         with:
-          sarif_file: ${{ steps.scan.outputs.sarif }}
+          sarif_file: 'trivy-results-source-code.sarif'
+          category: source-code
       - name: Validate Kubernetes manifests
         uses: stefanprodan/kube-tools@v1
         with:
@@ -65,19 +66,17 @@ jobs:
           chmod +x gradlew
           ./gradlew bootBuildImage \
             --imageName ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.VERSION }}
-      - name: Source code vulnerability scanning
+      - name: OCI image vulnerability scanning
         uses: aquasecurity/trivy-action@master
         with:
-          scan-type: 'fs'
-          scan-ref: '${{ github.event.repository.name }}'
+          image-ref: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.VERSION }}
           format: 'sarif'
-          output: 'trivy-results-source-code.sarif'
+          output: 'trivy-results-oci-image.sarif'
       - name: Upload vulnerability report
         uses: github/codeql-action/upload-sarif@v2
         if: success() || failure()
         with:
-          sarif_file: 'trivy-results-source-code.sarif'
-          category: source-code
+          sarif_file: 'trivy-results-oci-image.sarif'
       - name: Log into container registry
         uses: docker/login-action@v2
         with:
