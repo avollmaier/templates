@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ${{values.artifact_id}}
+  labels:
+    app: ${{values.artifact_id}}
+spec:
+  type: ClusterIP
+  selector:
+    app: ${{values.artifact_id}}
+  ports:
+    - protocol: TCP
+      port: ${{values.port}}
+      targetPort: ${{values.port}}
