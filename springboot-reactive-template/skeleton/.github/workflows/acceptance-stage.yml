@@ -11,14 +11,15 @@ env:
 
 jobs:
   prepare:
-  - name : Retrieve Version
-    run: |
-      echo "::set-output name=VERSION_NAME::$(${{github.workspace}}/gradlew -q printVersionName)"
-    id: app_version
-  - name: Get version
-    run: |
-      echo "version_name=${{steps.android_version.outputs.VERSION_NAME}}" >> $GITHUB_ENV
-
+    - name: Checkout source code
+      steps:
+        - name: Retrieve Version
+          run: |
+            echo "::set-output name=VERSION_NAME::$(${{github.workspace}}/gradlew -q printVersionName)"
+          id: app_version
+        - name: Get version
+          run: |
+            echo "version_name=${{steps.android_version.outputs.VERSION_NAME}}" >> $GITHUB_ENV
   functional:
     name: Functional Acceptance Tests
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
