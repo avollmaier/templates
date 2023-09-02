@@ -11,7 +11,8 @@ env:
 
 jobs:
   prepare:
-    - name: Checkout source code
+      runs-on: ubuntu-22.04
+      name: Checkout source code
       steps:
         - name: Retrieve Version
           run: |

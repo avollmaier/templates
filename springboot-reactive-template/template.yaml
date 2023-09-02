@@ -96,7 +96,7 @@ spec:
         repoUrl: ${{ parameters.repoUrl }}
         repoVisibility: public
         protectDefaultBranch: false
-        defaultBranchName: main
+        defaultBranch: main
 
     - id: register
       name: Register
