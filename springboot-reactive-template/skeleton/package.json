@@ -1,9 +1,8 @@
 {
-  "name": "gradle-semantic-release-plugin",
   "devDependencies": {
-    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/changelog": "^6.0.2",
     "@semantic-release/git": "^10.0.1",
-    "gradle-semantic-release-plugin": "1.7.7",
-    "semantic-release": "^21.1.1"
+    "gradle-semantic-release-plugin": "1.7.6",
+    "semantic-release": "^20.1.0"
   }
 }

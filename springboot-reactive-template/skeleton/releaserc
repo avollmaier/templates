@@ -1,7 +1,7 @@
 {
   branches: [
-     "main",
-    { name: "alpha", prerelease: true }
+    { name: "alpha", prerelease: true },
+    { name: "main" }
   ],
   debug: true,
   ci: true,
