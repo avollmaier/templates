@@ -56,6 +56,9 @@ tasks.named('jar') {
     enabled = false
 }
 
+task.printVersionName {
+    println project.ext.version_name
+}
 
 tasks.named('bootBuildImage') {
     builder = 'paketobuildpacks/builder:base'
