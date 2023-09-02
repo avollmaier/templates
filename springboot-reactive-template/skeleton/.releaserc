@@ -21,6 +21,18 @@
         "assets": ["CHANGELOG.md"]
       }
     ],
+    [
+      "@saithodev/semantic-release-backmerge",
+      {
+        "backmergeBranches": [
+          {
+            "from": "main",
+            "to": "develop"
+          }
+        ],
+        "clearWorkspace": true
+      }
+    ],
     "gradle-semantic-release-plugin",
     [
       "@semantic-release/git",
