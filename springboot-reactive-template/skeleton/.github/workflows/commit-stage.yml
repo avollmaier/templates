@@ -54,7 +54,7 @@ jobs:
             kustomize build k8s | kubeval --strict -
   semantic-release:
     name: Semantic Release
-    if: ${{ github.ref == 'refs/heads/main' }}
+    if: ${{ github.ref == 'refs/heads/master' }}
     needs: [ build ]
     runs-on: ubuntu-latest
     steps:
@@ -82,7 +82,7 @@ jobs:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
   package:
     name: Package and Publish
-    if: ${{ github.ref == 'refs/heads/main' }}
+    if: ${{ github.ref == 'refs/heads/master' }}
     needs: [ semantic-release ]
     runs-on: ubuntu-22.04
     permissions: write-all

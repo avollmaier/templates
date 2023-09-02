@@ -3,7 +3,7 @@ on:
   workflow_run:
     workflows: [ 'Commit Stage' ]
     types: [ completed ]
-    branches: main
+    branches: master
 concurrency: acceptance
 
 jobs:
@@ -34,7 +34,6 @@ jobs:
           secret: ${{ secrets.GITHUB_TOKEN }}
           approvers: avollmaier
           minimum-approvals: 1
-          timeout-minutes: 60
           issue-title: "Deploying v1.3.5 to prod from staging"
           issue-body: "Please approve or deny the deployment of version v1.3.5."
           exclude-workflow-initiator-as-approver: false
