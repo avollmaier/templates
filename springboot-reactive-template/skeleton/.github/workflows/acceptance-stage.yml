@@ -10,30 +10,6 @@ permissions:
   issues: write
 
 jobs:
-  prepare:
-    runs-on: ubuntu-22.04
-    name: Checkout source code and retrieve version
-    steps:
-      - name: Checkout source code
-        uses: actions/checkout@v3
-
-      - name: Set up JDK
-        uses: actions/setup-java@v3
-        with:
-          distribution: temurin
-          java-version: 17
-          cache: gradle
-
-      - name: Execute Gradle build
-        run: chmod +x gradlew
-
-      - name: Retrieve Version
-        run: |
-          echo "::set-output name=VERSION_NAME::$(${{github.workspace}}/gradlew -q printVersionName)"
-        id: app_version
-      - name: Get version
-        run: |
-          echo "version_name=${{steps.app_version.outputs.VERSION_NAME}}" >> $GITHUB_ENV
   functional:
     name: Functional Acceptance Tests
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
@@ -55,8 +31,14 @@ jobs:
 
   approval:
     runs-on: ubuntu-latest
+    needs: [ functional, performance, security ]
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - id: get_data
+        run: |
+          echo "version=$(cat build.gradle | grep "version =" | cut -d'=' -f2)" >> $GITHUB_OUTPUT
       - name: Wait for approval
         uses: trstringer/manual-approval@v1
         timeout-minutes: 60
@@ -64,8 +46,8 @@ jobs:
           secret: ${{ secrets.GITHUB_TOKEN }}
           minimum-approvals: 1
           approvers: ${{ github.repository_owner }}
-          issue-title: "🚀 Deploying v${{env.version_name}} to prod from staging"
-          issue-body: "Please approve or deny the deployment of version v${{env.version_name}}."
+          issue-title: '🚀 Deploying v${{ steps.get_data.outputs.version }} to production'
+          issue-body: "Please approve or deny the release of ${{ github.github.repository }}. **VERSION**: ${{ steps.get_data.outputs.version }} **TAG**: ${{ github.ref_name }}  **COMMIT**: ${{ github.sha }}"
           exclude-workflow-initiator-as-approver: false
           additional-approved-words: ''
           additional-denied-words: ''
