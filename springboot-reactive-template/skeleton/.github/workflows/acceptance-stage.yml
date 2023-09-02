@@ -6,13 +6,6 @@ on:
     branches: main
 concurrency: acceptance
 
-env:
-  OWNER: ${{github.repository_owner}}
-  REGISTRY: ghcr.io
-  APP_REPO: ${{ github.event.repository.name }}
-  DEPLOY_REPO: deployment
-  VERSION: ${{ github.sha }}
-
 jobs:
   functional:
     name: Functional Acceptance Tests
@@ -32,19 +25,18 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - run: echo "Running security tests"
-  deliver:
-    name: Deliver release candidate to production
-    needs: [ functional, performance, security ]
-    runs-on: ubuntu-22.04
+
+  approval:
+    runs-on: ubuntu-latest
     steps:
-      - name: Deliver application to production
-        uses: peter-evans/repository-dispatch@v2
+      - uses: trstringer/manual-approval@v1
         with:
-          token: ${{ secrets.DISPATCH_TOKEN }}
-          repository: ${{ env.OWNER }}/${{ env.DEPLOY_REPO }}
-          event-type: app_delivery
-          client-payload: '{
-            "app_image": "${{ env.REGISTRY }}/${{ env.OWNER }}/${{ env.APP_REPO }}",
-            "app_name": "${{ env.APP_REPO }}",
-            "app_version": "${{ env.VERSION }}"
-          }'
+          secret: ${{ secrets.GITHUB_TOKEN }}
+          approvers: avollmaier
+          minimum-approvals: 1
+          timeout-minutes: 60
+          issue-title: "Deploying v1.3.5 to prod from staging"
+          issue-body: "Please approve or deny the deployment of version v1.3.5."
+          exclude-workflow-initiator-as-approver: false
+          additional-approved-words: ''
+          additional-denied-words: ''
