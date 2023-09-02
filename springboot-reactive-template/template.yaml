@@ -16,25 +16,31 @@ spec:
       required:
         - component_id
         - company_name
+        - java_package_name
         - description
         - owner
         - port
-        - java_package_name
+        - artifact_id
       properties:
         component_id:
-          title: Name
+          title: Artifact Name
           type: string
-          description: Unique name of the component
+          description: Unique name of the component. eg (EdgeService) [camel case]
           ui:field: EntityNamePicker
-        company_name:
-          title: Company Name
+        artifact_id:
+          title: Artifact Id
           type: string
-          description: Unique name of the company
+          description: Unique name of the componenteg (edge-service) [camel case]
           ui:field: EntityNamePicker
         java_package_name:
-          title: Java Package Name
+          title: Artiface Package Name
           type: string
-          description: Name for the java package. eg (io.backstage.blah)
+          description: Name for the java package. eg (edgeservice) [should be in lower case]
+        company_name:
+          title: Sub Group / Project Name
+          type: string
+          description: Unique name of the company in lower case for package name. eg (hypercrawler) [should be in lower case]
+          ui:field: EntityNamePicker
         description:
           title: Description
           type: string
@@ -46,7 +52,7 @@ spec:
         owner:
           title: Owner
           type: string
-          description: Owner of the component
+          description: Owner of the component. eg (avollmaier) [should be in lower case]
           ui:field: OwnerPicker
           ui:options:
             allowedKinds:
@@ -73,10 +79,10 @@ spec:
           - .github/workflows/*
         values:
           component_id: ${{ parameters.component_id }}
-          description: ${{ parameters.description }}
-          artifact_id: ${{ parameters.component_id }}
           company_name: ${{ parameters.company_name }}
           java_package_name: ${{ parameters.java_package_name }}
+          description: ${{ parameters.description }}
+          artifact_id: ${{ parameters.artifact_id }}
           owner: ${{ parameters.owner }}
           destination: ${{ parameters.repoUrl | parseRepoUrl }}
           port: ${{ parameters.port }}
@@ -88,6 +94,9 @@ spec:
         allowedHosts: ["github.com"]
         description: This is ${{ parameters.component_id }}
         repoUrl: ${{ parameters.repoUrl }}
+        repoVisibility: public
+        protectDefaultBranch: false
+        defaultBranch: main
 
     - id: register
       name: Register

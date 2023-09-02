@@ -35,11 +35,11 @@ spec:
             httpGet:
               path: /actuator/health/liveness
               port: ${{values.port}}
-            initialDelaySeconds: 10
+            initialDelaySeconds: 15
             periodSeconds: 5
           readinessProbe:
             httpGet:
               path: /actuator/health/readiness
               port: ${{values.port}}
-            initialDelaySeconds: 5
-            periodSeconds: 15
+            initialDelaySeconds: 15
+            periodSeconds: 5
