@@ -64,22 +64,19 @@ jobs:
             kustomize build k8s | kubeval --strict -
 
   functional:
-    name: Functional Acceptance Tests 🧪
-    if: ${{ github.ref == 'refs/heads/main' }}
+    name: Functional Acceptance Tests 🎯
     needs: [ build ]
     runs-on: ubuntu-22.04
     steps:
       - run: echo "Running functional acceptance tests"
   performance:
     name: Performance Tests 🚀
-    if: ${{ github.ref == 'refs/heads/main' }}
     needs: [ functional ]
     runs-on: ubuntu-22.04
     steps:
       - run: echo "Running performance tests"
   security:
     name: Security Tests 🤖
-    if: ${{ github.ref == 'refs/heads/main' }}
     needs: [ performance ]
     runs-on: ubuntu-22.04
     steps:
@@ -89,7 +86,6 @@ jobs:
     name: Deploy Approval 💫
     runs-on: ubuntu-latest
     needs: [ functional, performance, security ]
-    if: ${{ github.ref == 'refs/heads/main' }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -103,7 +99,7 @@ jobs:
           secret: ${{ secrets.GITHUB_TOKEN }}
           minimum-approvals: 1
           approvers: ${{ github.repository_owner }}
-          issue-title: '🚀 Deploying v${{ steps.get_data.outputs.version }} to production'
+          issue-title: '🚀 Deploying ${{ steps.get_data.outputs.version }} to production'
           issue-body: "Please approve or deny the release of ${{ github.github.repository }}. **VERSION**: ${{ steps.get_data.outputs.version }} **TAG**: ${{ github.ref_name }}  **COMMIT**: ${{ github.sha }}"
           exclude-workflow-initiator-as-approver: false
           additional-approved-words: ''
@@ -111,7 +107,6 @@ jobs:
 
   semantic-release:
     name: Semantic Release 🧭
-    if: ${{ github.ref == 'refs/heads/main' }} || ${{ github.ref == 'refs/heads/alpha' }}
     needs: [ approval ]
     runs-on: ubuntu-latest
     steps:
@@ -144,7 +139,6 @@ jobs:
 
   package:
     name: Package and Publish 📦
-    if: ${{ github.ref == 'refs/heads/main' }}
     needs: [ semantic-release ]
     runs-on: ubuntu-22.04
     permissions: write-all

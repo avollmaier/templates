@@ -65,21 +65,18 @@ jobs:
 
   functional:
     name: Functional Acceptance Tests 🧪
-    if: ${{ github.ref == 'refs/heads/main' }}
     needs: [ build ]
     runs-on: ubuntu-22.04
     steps:
       - run: echo "Running functional acceptance tests"
   performance:
     name: Performance Tests 🚀
-    if: ${{ github.ref == 'refs/heads/main' }}
     needs: [ functional ]
     runs-on: ubuntu-22.04
     steps:
       - run: echo "Running performance tests"
   security:
     name: Security Tests 🤖
-    if: ${{ github.ref == 'refs/heads/main' }}
     needs: [ performance ]
     runs-on: ubuntu-22.04
     steps:
@@ -87,7 +84,6 @@ jobs:
 
   semantic-release:
     name: Semantic Release 🧭
-    if: ${{ github.ref == 'refs/heads/alpha' }}
     needs: [ security ]
     runs-on: ubuntu-latest
     steps:
