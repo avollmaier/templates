@@ -61,9 +61,9 @@ tasks.named('bootBuildImage') {
     builder = 'paketobuildpacks/builder:base'
 
     if(System.getenv('NATIVE_IMAGE_ENABLED') == 'enabled'){
+        println("bootBuildImage is building a native image")
         environment = ['BP_NATIVE_IMAGE': 'true']
     }else {
-        println("bootBuildImage is building a native image")
         environment = ['BP_LIVE_RELOAD_ENABLED': 'true']
     }
 
