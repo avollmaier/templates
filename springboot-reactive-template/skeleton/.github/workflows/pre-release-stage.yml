@@ -114,6 +114,7 @@ jobs:
           npx semantic-release
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
   package:
     name: Package and Publish 📦
     needs: [ semantic-release ]
